@@ -5,3 +5,4 @@
 .ropeproject/
 build/
 dist/
+.idea/
