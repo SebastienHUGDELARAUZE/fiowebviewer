@@ -6,6 +6,8 @@
         <ul class="navbar-nav">
             <li><a href="/">Index</a></li>
             <li class="button"><input type="submit" name="compare" value="Compare selected" class="submit-btn"></li>
+            <li class="button"><button type="button" id="bn-fio-select-all" class="submit-btn">Select All</button></li>
+            <li class="button"><button type="button" id="bn-fio-deselect-all" class="submit-btn">Deselect All</button></li>
             <li class="button"><button type="button" id="bn-fio-delete-show" class="submit-btn">Delete Selected</button></li>
             <li><a href="/fio-webviewer.sh">Download script</a></li>
             <li class="button"><input value="{{ request.url }}fio-webviewer.sh" readonly onclick="this.select()" width="60px"></input></li>
@@ -19,7 +21,7 @@
             <div class="col-xs-12 fio-results">
                 <ul>
                 {% for fio_result in fio_results|sort(reverse=True, attribute='upload_date') %}
-                <li><input type="checkbox" name="result" value="{{fio_result.dir_name}}">
+                <li><input type="checkbox" name="result" value="{{fio_result.dir_name}}" >
                             <a href="summary/{{fio_result.dir_name}}">
                                 {{fio_result.fio_name}}
                             </a>
@@ -46,13 +48,20 @@
     </form>
     <script>
         $(document).ready(function(){
-
             $( "#bn-fio-delete-show" ).click(function() {
                 $( "#fio-delete" ).show();
             });
 
             $( "#bn-fio-delete-hide" ).click(function() {
                 $( "#fio-delete" ).hide();
+            });
+
+            $( "#bn-fio-select-all" ).click(function(){
+                $("input:checkbox").prop('checked', true);
+            });
+
+            $( "#bn-fio-deselect-all" ).click(function(){
+                $("input:checkbox").prop('checked', false);
             });
         });
     </script>
