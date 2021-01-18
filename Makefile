@@ -1,12 +1,42 @@
-LIB := lib
+.PHONY: all sdist develop bdist_wheel git_hooks requirements requirements_to_wheels
 
 all: bdist_wheel
 
+PY_ENV_PATH=/usr/bin
+PYTHON=$(PY_ENV_PATH)/python
+PIP=$(PY_ENV_PATH)/pip
+
+LIB := lib
+
+### initialization ###
+
 requirements: requirements.txt
-	pip install -r requirements.txt
+	$(PIP) install -r requirements.txt
+
+requirements-dev: requirements-dev.txt
+	$(PIP) install -r requirements-dev.txt
+
+create_tables:
+	$(PYTHON) create_tables.py
+
+### develop ###
+
+develop: requirements requirements-dev git_hooks
+	$(PYTHON) setup.py develop
+
+git_hooks:
+	@if ! [[ -L .git/hooks/pre-commit ]]; then \
+        echo "Installing git pre-commit hook"; \
+        ln -fs ../../git/pre-commit .git/hooks/pre-commit; \
+    fi
+
+### wheel / dist ###
 
 sdist:
-	python setup.py sdist
+	$(PYTHON) setup.py sdist
+
+requirements_to_wheels:
+	$(PIP) wheel -r requirements.txt
 
 bdist_wheel:
 	# Mocking environment to enable creating wheel
@@ -21,20 +51,5 @@ bdist_wheel:
 	echo "CACHE_PATH = \"$$TMP/cache\"" >> "$$TMP/config.cfg" ;\
 	echo "DATABASE = \"sqlite:///$$TMP/data/database.db\"" >> "$$TMP/config.cfg" ;\
 	export FIOWEBVIEWER_SETTINGS="$$TMP/config.cfg" ;\
-	python setup.py bdist_wheel --universal ;\
+	$(PYTHON) setup.py bdist_wheel --universal ;\
 	rm -rf "$$TMP"
-
-requirements_to_wheels:
-	pip wheel -r requirements.txt
-
-git_hooks:
-	@if ! [[ -L .git/hooks/pre-commit ]]; then \
-        echo "Installing git pre-commit hook"; \
-        ln -fs ../../git/pre-commit .git/hooks/pre-commit; \
-    fi
-
-develop: requirements git_hooks
-	python setup.py develop
-
-
-.PHONY: all sdist develop bdist_wheel git_hooks requirements requirements_to_wheels
