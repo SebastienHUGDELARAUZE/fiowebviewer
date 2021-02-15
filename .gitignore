@@ -5,4 +5,10 @@
 .ropeproject/
 build/
 dist/
+
+# IDE config folder
+.vscode/
 .idea/
+
+# Python virtual environment
+venv/
