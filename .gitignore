@@ -1,8 +1,10 @@
 *.sw[p-z]
 *.pyc
+
 *.egg-info/
 .cache/
 .ropeproject/
+
 build/
 dist/
 
@@ -12,3 +14,12 @@ dist/
 
 # Python virtual environment
 venv/
+
+# Project specific
+db/
+log/
+data/
+cache/
+
+.env
+config.cfg
