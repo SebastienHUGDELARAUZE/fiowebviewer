@@ -18,7 +18,7 @@ function Job(id, result, types) {
     this.types = types;
 }
 
-// constructor for Result object
+// constructor for FioOutput object
 function Result(id, name, runtime) {
     this.id = id;
     this.name = name;

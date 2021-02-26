@@ -18,7 +18,7 @@ from pint import UnitRegistry
 
 from fiowebviewer.engine.database import (
     DBSession,
-    Result,
+    FioOutput,
     Tag,
 )
 from fiowebviewer.engine.run import fio_webviewer
@@ -63,15 +63,15 @@ class FioResult(object):
 
     def _get_upload_date(self):
         session = DBSession()
-        result = session.query(Result). \
-            filter(Result.id == self.dir_name).one()
+        result = session.query(FioOutput). \
+            filter(FioOutput.id == self.dir_name).one()
         return result.date_submitted
 
     @property
     def tags_list(self):
         session = DBSession()
-        result = session.query(Result).filter(Result.id ==
-                                              self.dir_name).one()
+        result = session.query(FioOutput).filter(FioOutput.id ==
+                                                 self.dir_name).one()
         tags = session.query(Tag).filter(Tag.result == result).all()
         return tags
 
@@ -79,8 +79,8 @@ class FioResult(object):
     def fio_name(self):
         if self._fio_name is None:
             session = DBSession()
-            result = session.query(Result).filter(Result.id ==
-                                                  self.dir_name).first()
+            result = session.query(FioOutput).filter(FioOutput.id ==
+                                                     self.dir_name).first()
             if result.name is not None:
                 self._fio_name = str(result.name)
             else:

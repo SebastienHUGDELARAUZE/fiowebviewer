@@ -17,9 +17,12 @@ from fiowebviewer.engine import (
     database,
 )
 
-DATABASE = fio_webviewer.config['DATABASE']
+databaseName = fio_webviewer.config["DATABASE_NAME"]
+databaseHost = fio_webviewer.config["DATABASE_HOST"]
+databaseUser = fio_webviewer.config["DATABASE_USER"]
+databasePassword = fio_webviewer.config["DATABASE_PASSWORD"]
 
-engine = create_engine(DATABASE, echo=True)
+engine = create_engine(f"mysql+pymysql://{databaseUser}:{databasePassword}@{databaseHost}/{databaseName}?charset=utf8mb4")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--drop', help='drop existing tables', action='store_true',

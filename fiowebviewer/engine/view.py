@@ -22,7 +22,7 @@ from werkzeug.utils import secure_filename
 
 from fiowebviewer.engine.database import (
     DBSession,
-    Result,
+    FioOutput,
     Tag,
 )
 from fiowebviewer.engine.run import fio_webviewer
@@ -188,7 +188,7 @@ fio_table["lat (msec)"] = OrderedDict([
 def get_all_fio_results(DATA_PATH):
     session = DBSession()
     return [FioResult(DATA_PATH, r.id)
-            for r in session.query(Result).all()]
+            for r in session.query(FioOutput).all()]
 
 
 @fio_webviewer.errorhandler(400)
@@ -237,8 +237,8 @@ def compare_fio_result():
             session = DBSession()
             for fio_result in fio_results_list:
                 try:
-                    result = session.query(Result).filter(Result.id ==
-                                                          fio_result).one()
+                    result = session.query(FioOutput).filter(FioOutput.id ==
+                                                             fio_result).one()
                     session.delete(result)
                     tags = session.query(Tag).filter(Tag.result_id ==
                                                      fio_result).all()
@@ -325,7 +325,7 @@ def view_fio_results_index():
 @fio_webviewer.route('/', methods=['POST'])
 def upload_fio_results():
     session = DBSession()
-    new_result = Result(date_submitted=datetime.datetime.utcnow())
+    new_result = FioOutput(date_submitted=datetime.datetime.utcnow())
     session.add(new_result)
     session.flush()
     fio_result_path = os.path.join(DATA_PATH, str(new_result.id))

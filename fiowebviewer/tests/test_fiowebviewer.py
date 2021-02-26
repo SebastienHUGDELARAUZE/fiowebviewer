@@ -11,7 +11,7 @@ from fiowebviewer.engine import (
     view,
 )
 from fiowebviewer.engine.database import (
-    Result,
+    FioOutput,
 )
 from fiowebviewer.engine.models import (
     FioResult,
@@ -115,8 +115,8 @@ def test_delete_result_selected(app, client, fio_result_ids, session,
     response = client.get(base_url)
     assert response.status_code == 302
     for fio_result_id in fio_result_ids:
-        assert not session.query(Result).filter(Result.id ==
-                                                fio_result_id).count()
+        assert not session.query(FioOutput).filter(FioOutput.id ==
+                                                   fio_result_id).count()
         assert not os.path.exists(os.path.join(temp_path_with_data,
                                   fio_result_id))
 

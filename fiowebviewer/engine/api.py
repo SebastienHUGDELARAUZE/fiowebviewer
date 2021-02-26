@@ -16,7 +16,7 @@ from werkzeug.exceptions import BadRequest
 
 from fiowebviewer.engine.database import (
     DBSession,
-    Result,
+    FioOutput,
 )
 from fiowebviewer.engine.run import fio_webviewer
 from fiowebviewer.engine.models import FioResult
@@ -58,8 +58,8 @@ def api_fio_result(fio_result_id):
             if input_data['name']:
                 session = DBSession()
                 try:
-                    result = session.query(Result).filter(Result.id ==
-                                                          fio_result_id).one()
+                    result = session.query(FioOutput).filter(FioOutput.id ==
+                                                             fio_result_id).one()
                     result.name = input_data['name']
                 except NoResultFound:
                     session.rollback()

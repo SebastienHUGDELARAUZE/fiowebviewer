@@ -18,19 +18,35 @@ from sqlalchemy.schema import ForeignKey
 
 from fiowebviewer.engine.run import fio_webviewer
 
-DATABASE = fio_webviewer.config['DATABASE']
+databaseName = fio_webviewer.config["DATABASE_NAME"]
+databaseHost = fio_webviewer.config["DATABASE_HOST"]
+databaseUser = fio_webviewer.config["DATABASE_USER"]
+databasePassword = fio_webviewer.config["DATABASE_PASSWORD"]
 
-engine = create_engine('{}?check_same_thread=False'.format(DATABASE), echo=False)
+engine = create_engine(
+    f"mysql+pymysql://{databaseUser}:{databasePassword}@{databaseHost}/{databaseName}?charset=utf8mb4")
 Base = declarative_base()
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
 
-class Result(Base):
-    __tablename__ = 'results'
+class FioOutput(Base):
+    __tablename__ = 'data'
     id = Column(Integer, primary_key=True)
-    name = Column(String(64), nullable=True)
     date_submitted = Column(DateTime, nullable=False)
+
+    # Information
+    name = Column(String(64), nullable=True)
+    hostname = Column(String(64), nullable=True)
+    fio_version = Column(String(32), nullable=True)
+    timestamp = Column(Integer, nullable=True)
+    timestamp_ms = Column(Integer, nullable=True)
+    time = Column(DateTime, nullable=True)
+
+    # Global options
+
+    # Read:
+    #  -
 
     def __repr__(self):
         return self.date_submitted
@@ -39,9 +55,9 @@ class Result(Base):
 class Tag(Base):
     __tablename__ = 'tags'
     id = Column(Integer, primary_key=True)
-    tag = Column(String, nullable=False)
-    result_id = Column(Integer, ForeignKey("results.id"), nullable=False)
-    result = relationship(Result)
+    tag = Column(String(128), nullable=False)
+    result_id = Column(Integer, ForeignKey("data.id"), nullable=False)
+    result = relationship(FioOutput)
 
     def __repr__(self):
         return self.tag

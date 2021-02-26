@@ -32,7 +32,7 @@ from fiowebviewer.engine import (
     view,
 )
 from fiowebviewer.engine.database import (
-    Result,
+    FioOutput,
     Tag,
 )
 from fiowebviewer.engine.models import (
@@ -123,7 +123,7 @@ def database_with_results_only(request, temp_path_with_data, copy_sample_data,
         with open(fio_date_submitted_file) as f:
             date_submitted = f.read()
             date_submitted = date_submitted.strip()
-        new_result = Result(date_submitted=datetime.datetime.strptime(
+        new_result = FioOutput(date_submitted=datetime.datetime.strptime(
             date_submitted, '%Y-%m-%dT%H.%M.%S'))
         session.add(new_result)
     session.commit()
@@ -138,7 +138,7 @@ def database_with_names(request, temp_path_with_data, copy_sample_data,
         with open(fio_date_submitted_file) as f:
             date_submitted = f.read()
             date_submitted = date_submitted.strip()
-        new_result = Result(date_submitted=datetime.datetime.strptime(
+        new_result = FioOutput(date_submitted=datetime.datetime.strptime(
             date_submitted, '%Y-%m-%dT%H.%M.%S'))
         session.add(new_result)
         fio_name_file = os.path.join(temp_path_with_data, directory,
@@ -158,7 +158,7 @@ def database_with_tags(request, temp_path_with_data, copy_sample_data,
         with open(fio_date_submitted_file) as f:
             date_submitted = f.read()
             date_submitted = date_submitted.strip()
-        new_result = Result(date_submitted=datetime.datetime.strptime(
+        new_result = FioOutput(date_submitted=datetime.datetime.strptime(
             date_submitted, '%Y-%m-%dT%H.%M.%S'))
         session.add(new_result)
         fio_tags_file = os.path.join(temp_path_with_data, directory,
