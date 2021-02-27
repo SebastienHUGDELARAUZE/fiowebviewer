@@ -20,4 +20,4 @@ def insertInMongo(fiojson):
     # creating or switching to demoCollection
     collection = db[database["name"]]
 
-    collection.insert_one()
+    collection.insert_one(my_dic)
