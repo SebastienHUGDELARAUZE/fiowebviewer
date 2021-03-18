@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+    app:
+        build: ./frontend/
+        ports:
+            - "80:80"
+
+    api:
+        build: ./backend/
+        ports:
+            - "8080:8080"
+        environment:
+            PORT: 8080
+        env_file: .env.prod
+
+    mongo:
+        image: mongo
+        restart: unless-stopped
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: pass
