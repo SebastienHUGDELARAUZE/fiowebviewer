@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-frontend.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/IMT-Atlantique-FIP2021/fiowebviewer-backend.git
