@@ -5,6 +5,8 @@ services:
         build: ./frontend/
         ports:
             - "80:80"
+        depends_on:
+            - api
 
     api:
         build: ./backend/
@@ -13,6 +15,8 @@ services:
         environment:
             PORT: 8080
         env_file: .env.prod
+        depends_on:
+            - mongo
 
     mongo:
         image: mongo
